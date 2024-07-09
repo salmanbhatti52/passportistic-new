@@ -20,9 +20,11 @@ class StampController extends GetxController {
   var load = false.obs;
   var loading = false.obs;
   Function()? onDataUpdated;
+
   late List<StampBackgroundModel> stampBackgrounds = [];
   late List<TravelMode> travelModes = [];
   String? imageData;
+
   StampBackgroundModel? selectedStampBackground;
   TravelMode? selectedTravelMode;
   String? selectedCountry;
@@ -37,8 +39,10 @@ class StampController extends GetxController {
   String? travelModeAsset;
   String? stampAsset;
   String? stampAssetMain;
-   bool isTransparent = false;
+
+  bool isTransparent = false;
   bool isTriangle = false;
+
   Future<void> validateStamp() async {
     load.value = true; // Show loading indicator
     try {
@@ -65,16 +69,15 @@ class StampController extends GetxController {
   Future populateAssets() async {
     for (int i = 0; i < ConstantStrings.stampBackgroundNames.length; i++) {
       stampBackgrounds.add(StampBackgroundModel(
-          id: i%11,
+          id: i % 11,
           label: ConstantStrings.stampBackgroundNames[i],
           assetLink: ConstantSvg.stampBackgrounds[i]));
     }
 
     for (int i = 0; i < ConstantStrings.travelModes.length; i++) {
       travelModes.add(TravelMode(
-        label: ConstantStrings.travelModes[i],
-        assetLink: ConstantSvg.travelModes[i],
-      ));
+          label: ConstantStrings.travelModes[i],
+          assetLink: ConstantSvg.travelModes[i]));
     }
     selectedStampBackground = stampBackgrounds.first;
   }
@@ -97,13 +100,16 @@ class StampController extends GetxController {
     }
 
     stampAssetMain = await rootBundle
-        .loadString('assets/passport/base_stamp/${isTransparent?"fixed_stamp_transparent":"fixed_stamp"}.svg')
+        .loadString(
+            'assets/passport/base_stamp/${isTransparent ? "fixed_stamp_transparent" : "fixed_stamp"}.svg')
         .then(
-          (value) => isTransparent? value.replaceAll(RegExp(r'white'), "#${ConstantColors.stampColors[selectedColorIndex].value.toRadixString(16).substring(2)}"):value.replaceAll(RegExp(r'#black'), "#ffffff"),
+          (value) => isTransparent
+              ? value.replaceAll(RegExp(r'white'),
+                  "#${ConstantColors.stampColors[selectedColorIndex].value.toRadixString(16).substring(2)}")
+              : value.replaceAll(RegExp(r'#black'), "#ffffff"),
         );
     update(["basic_stamp", "dynamic_stamp"]);
   }
-
 
   Future<void> convertWidgetToImage(GlobalKey globalKey) async {
     try {

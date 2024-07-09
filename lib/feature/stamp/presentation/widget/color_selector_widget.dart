@@ -8,11 +8,11 @@ class ColorSelectorWidget extends StatelessWidget {
   const ColorSelectorWidget({
     super.key,
     required this.controller,
-    this.onColorSelected, // Add this line
+    this.onColorSelected,
   });
 
   final StampController controller;
-  final Function(int)? onColorSelected; // Add this line
+  final Function(int)? onColorSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,10 @@ class ColorSelectorWidget extends StatelessWidget {
                         onTap: () {
                           controller.selectedColor =
                               ConstantColors.stampColors[index];
+                          controller.selectedColorIndex = index;
                           controller.update(["color_selection"]);
                           controller.loadTravelModeAsset();
-                          print("indexOfColor: $index");
-                          onColorSelected
-                              ?.call(index); // Invoke the callback here
+                          onColorSelected?.call(index);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(3),

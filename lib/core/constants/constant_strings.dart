@@ -11,6 +11,17 @@ class ConstantStrings {
     "Square",
     "Tombstone",
     "Triangle",
+    "Heptagon-Transparent (7 Sides)",
+    "Hexagonal-Transparent (6 Sides)",
+    "Octagonal-Transparent (8 Sides)",
+    "Oval-Transparent",
+    "Parallelogram-Transparent",
+    "Pentagon-Transparent (5 Sides)",
+    "Rectangle Rounded Corner-Transparent",
+    "Rectangle Square Corner-Transparent",
+    "Square-Transparent",
+    "Tombstone-Transparent",
+    "Triangle-Transparent",
   ];
 
   static const travelModes = [

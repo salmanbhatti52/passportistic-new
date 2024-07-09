@@ -211,7 +211,7 @@ class StampScreen extends StatelessWidget {
                         height: 10,
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 2),
                         child: Row(
                           children: [
                             Text(
@@ -226,7 +226,7 @@ class StampScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 1),
+                        padding: const EdgeInsets.only(left: 2, right: 1),
                         child: Text(
                           "Complete the following to get the Arrival Stamp of your own choosing. If you are not happy with your choices, please make alternative selections",
                           style: TextStyle(
@@ -253,7 +253,7 @@ class StampScreen extends StatelessWidget {
                         height: 10,
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 2),
                         child: Row(
                           children: [
                             Text(
@@ -268,7 +268,7 @@ class StampScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 1),
+                        padding: const EdgeInsets.only(left: 2, right: 1),
                         child: Text(
                           "Complete the following to get the Departure Stamp of your own choosing. If you are not happy with your choices, please make alternative selections",
                           style: TextStyle(
@@ -285,15 +285,14 @@ class StampScreen extends StatelessWidget {
                 CustomDropDownWidget(
                   onChange: (background) {
                     controller.selectedStampBackground = background;
-
                     selectedShapeIndex = controller.selectedStampBackground!.id;
-                         int index = controller.stampBackgrounds.indexOf(background);
+                    int index = controller.stampBackgrounds.indexOf(background);
                     controller.isTransparent = false;
-                    if(index > 10){
+                    if (index > 10) {
                       controller.isTransparent = true;
                     }
                     if (background != null &&
-                         background.label.toLowerCase().contains('triangle')) {
+                        background.label.toLowerCase().contains('triangle')) {
                       controller.isTriangle = true;
                     } else {
                       controller.isTriangle = false;
