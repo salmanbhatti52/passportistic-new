@@ -58,12 +58,18 @@ class StampController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     validateStamp();
     populateAssets();
     selectedColor = Colors.black;
     selectedWay = ConstantStrings.way.first;
     loadTravelModeAsset();
-    super.onInit();
+  }
+
+    @override
+  void onClose() {
+    Get.delete<StampController>();
+    super.onClose();
   }
 
   Future populateAssets() async {
@@ -160,5 +166,13 @@ class StampController extends GetxController {
       print(res.reasonPhrase);
       validationModelApi = validationModelApiFromJson(resBody);
     }
+  }
+}
+
+
+class StampBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<StampController>(() => StampController());
   }
 }

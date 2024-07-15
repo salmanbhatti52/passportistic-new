@@ -47,7 +47,7 @@ class StampScreen extends StatelessWidget {
   int selectedTravelModes = 1;
   int selectedShapeIndex = 1;
   int? selectedColorIndex;
-  String? travelStatus;
+  String travelStatus = "DEPARTED";
 
   DepartedDetailsModels departedDetailsModels = DepartedDetailsModels();
 
@@ -124,6 +124,7 @@ class StampScreen extends StatelessWidget {
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
+            Get.delete<StampController>();
           },
           child: SvgPicture.asset(
             "assets/arrowBack1.svg",
@@ -478,12 +479,18 @@ class StampScreen extends StatelessWidget {
                                   0) {
                                 checkPassPortPages(context);
                               } else {
-                                if (controller.cityName == null &&
-                                    selectedTravelModes == null &&
-                                    selectedShapeIndex == null &&
-                                    selectedColorIndex == null &&
-                                    controller.selectedDate == null &&
-                                    controller.selectedTime == null) {
+                                selectedColorIndex = 1;
+                                selectedShapeIndex = 1;
+                                bool isAnyFieldSet = [
+                                  controller.cityName.isNotEmpty,
+                                  selectedTravelModes >= 0,
+                                  selectedShapeIndex >= 0,
+                                  selectedColorIndex! >= 0,
+                                  controller.selectedDate != null,
+                                  controller.selectedTime != null,
+                                ].contains(true);
+
+                                if (!isAnyFieldSet) {
                                   Fluttertoast.showToast(
                                       msg: "Please Select all Fields",
                                       backgroundColor: Colors.red);
@@ -492,7 +499,7 @@ class StampScreen extends StatelessWidget {
                                   if (departedDetailsModels.status ==
                                       "success") {
                                     Fluttertoast.showToast(
-                                      msg: "SuccessFull",
+                                      msg: "Stamped successfully.",
                                       backgroundColor: Colors.green,
                                     );
                                     Navigator.pushReplacement(context,
