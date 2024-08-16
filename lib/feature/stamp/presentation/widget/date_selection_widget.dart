@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class DateSelectionWidget extends StatelessWidget {
   DateSelectionWidget({super.key, required this.getDate});
-  void Function(String?) getDate;
+  void Function(String?, String?) getDate;
 
   TextEditingController dateTimeTextController = TextEditingController();
 
@@ -22,12 +22,29 @@ class DateSelectionWidget extends StatelessWidget {
     return selectedDateString;
   }
 
+  Future<String?> pickDateFormatted(BuildContext context) async {
+    String? selectedDateString;
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+    if (selectedDate != null) {
+      selectedDateString = DateFormat('dd-MMMM-yyyy').format(selectedDate);
+      dateTimeTextController.text = selectedDateString;
+    }
+    return selectedDateString;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         String? pickedDateString = await pickDate(context);
-        getDate(pickedDateString);
+        String? pickedDateFormatted = await pickDateFormatted(context);
+
+        getDate(pickedDateString, pickedDateFormatted);
       },
       child: TextField(
         controller: dateTimeTextController,

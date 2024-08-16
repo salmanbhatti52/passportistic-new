@@ -31,6 +31,7 @@ class StampController extends GetxController {
   String? selectedWay;
   String? selectedDate;
   String? selectedTime;
+  String? apiDate;
   String cityName = '';
   int selectedColorIndex = 0;
   late Color selectedColor;
@@ -66,7 +67,7 @@ class StampController extends GetxController {
     loadTravelModeAsset();
   }
 
-    @override
+  @override
   void onClose() {
     Get.delete<StampController>();
     super.onClose();
@@ -166,13 +167,5 @@ class StampController extends GetxController {
       print(res.reasonPhrase);
       validationModelApi = validationModelApiFromJson(resBody);
     }
-  }
-}
-
-
-class StampBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<StampController>(() => StampController());
   }
 }

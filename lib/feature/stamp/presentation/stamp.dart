@@ -53,7 +53,6 @@ class StampScreen extends StatelessWidget {
 
   departedDetails() async {
     // try {
-
     prefs = await SharedPreferences.getInstance();
     userID = prefs?.getString('userID');
     String apiUrl = "$baseUrl/departure_details";
@@ -89,7 +88,7 @@ class StampScreen extends StatelessWidget {
       "transport_mode_id": selectedTravelModes.toString(),
       "stamp_shape_id": selectedShapeIndex.toString(),
       "stamps_color_id": selectedColorIndex.toString(),
-      "stamps_date": controller.selectedDate.toString(),
+      "stamps_date": controller.apiDate.toString(),
       "stamps_offset_rotation": "-5",
       "stamps_offset_vertical": "5",
       "stamps_offset_horizental": "8",
@@ -197,90 +196,22 @@ class StampScreen extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                if (travelStatus == 'ARRIVED')
-                  Column(
-                    children: [
-                      Center(
-                        child: SvgPicture.asset(
-                          "assets/log1.svg",
-                          height: 35,
-                          width: 108,
-                          color: const Color(0xFFF65734),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 2),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Arrival Details",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24,
-                                color: Color(0xFFF65734),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2, right: 1),
-                        child: Text(
-                          "Complete the following to get the Arrival Stamp of your own choosing. If you are not happy with your choices, please make alternative selections",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xFF141111).withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                if (travelStatus == 'DEPARTED')
-                  Column(
-                    children: [
-                      Center(
-                        child: SvgPicture.asset(
-                          "assets/log1.svg",
-                          height: 35,
-                          width: 108,
-                          color: const Color(0xFFF65734),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 2),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Departure Details",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24,
-                                color: Color(0xFFF65734),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2, right: 1),
-                        child: Text(
-                          "Complete the following to get the Departure Stamp of your own choosing. If you are not happy with your choices, please make alternative selections",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xFF141111).withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                addHeight(10),
+                //Way selection radio buttons
+                GetBuilder<StampController>(
+                  id: 'way_selection',
+                  builder: (controller) {
+                    return WaySelectionWidget(
+                      controller: controller,
+                      onWaySelected: (selectedLabel) {
+                        // Handle the selected label here
+                        print("Selected way: $selectedLabel");
+                        travelStatus = selectedLabel;
+                        print("TravelSTatus: $travelStatus");
+                      },
+                    );
+                  },
+                ),
                 addHeight(20),
                 //Dynamic Stamp Background selection Dropdown Widget
                 CustomDropDownWidget(
@@ -369,7 +300,7 @@ class StampScreen extends StatelessWidget {
                         (item) => dropdownMenuItem(item),
                       )
                       .toList(),
-                  hint: "Select Traveling Country",
+                  hint: "Select Country",
                   label: "Country",
                 ),
                 addHeight(20),
@@ -383,22 +314,7 @@ class StampScreen extends StatelessWidget {
                     controller.loadTravelModeAsset();
                   },
                 ),
-                addHeight(10),
-                //Way selection radio buttons
-                GetBuilder<StampController>(
-                  id: 'way_selection',
-                  builder: (controller) {
-                    return WaySelectionWidget(
-                      controller: controller,
-                      onWaySelected: (selectedLabel) {
-                        // Handle the selected label here
-                        print("Selected way: $selectedLabel");
-                        travelStatus = selectedLabel;
-                        print("TravelSTatus: $travelStatus");
-                      },
-                    );
-                  },
-                ),
+
                 addHeight(10),
                 //Stamp color selection widget
                 ColorSelectorWidget(
@@ -414,10 +330,12 @@ class StampScreen extends StatelessWidget {
                 addHeight(20),
                 //Dynamic Stamp date selection widget
                 DateSelectionWidget(
-                  getDate: (date) {
-                    controller.selectedDate = date;
+                  getDate: (date, formatted) {
+                    controller.selectedDate = formatted;
+                    controller.apiDate = date;
 
-                    print("Date: ${controller.selectedDate}");
+                    print("Date: $date");
+                    print("Date2: $formatted");
                     controller.update(["basic_stamp", "dynamic_stamp"]);
                   },
                 ),
@@ -505,7 +423,7 @@ class StampScreen extends StatelessWidget {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                        return const MainScreen();
+                                        return const ViewPassport();
                                       },
                                     ));
                                   } else {
@@ -575,7 +493,7 @@ class StampScreen extends StatelessWidget {
       context: context,
       dialogType: DialogType.warning,
       animType: AnimType.rightSlide,
-      title: 'Stamps Ended',
+      title: 'No additional stamps exist',
       desc: 'Click OK to go to the shop page.',
       btnCancelOnPress: () {
         Navigator.pop(context); // Close the dialog
@@ -584,7 +502,7 @@ class StampScreen extends StatelessWidget {
         Navigator.pop(context); // Close the dialog
         // Navigate to the shop page (replace 'ShopPage' with your actual route)
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const StampPage()));
+            MaterialPageRoute(builder: (context) => const MainScreen()));
       },
     ).show();
   }
@@ -594,7 +512,7 @@ class StampScreen extends StatelessWidget {
       context: context,
       dialogType: DialogType.warning,
       animType: AnimType.rightSlide,
-      title: 'Passport Pages Ended',
+      title: 'No additional stamped pages exist',
       desc: 'Click OK to go to the shop page.',
       btnCancelOnPress: () {
         Navigator.pop(context); // Close the dialog
@@ -603,7 +521,7 @@ class StampScreen extends StatelessWidget {
         Navigator.pop(context); // Close the dialog
         // Navigate to the shop page (replace 'ShopPage' with your actual route)
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const StampPage()));
+            MaterialPageRoute(builder: (context) => const MainScreen()));
       },
     ).show();
   }
