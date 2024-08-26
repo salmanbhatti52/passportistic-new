@@ -197,6 +197,17 @@ class StampScreen extends StatelessWidget {
             child: Column(
               children: [
                 addHeight(10),
+                        Padding(
+              padding: const EdgeInsets.only(left: 8, right: 1),
+              child: Text(
+                "Complete the following to get the Arrival Stamp of your own choosing.  If you are not happy with your choices, please make alternative selections",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF141111).withOpacity(0.5)),
+              ),
+            ),
+              addHeight(10),
                 //Way selection radio buttons
                 GetBuilder<StampController>(
                   id: 'way_selection',
