@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:logger/logger.dart';
 import 'package:passport_stamp/core/constants/constant_colors.dart';
 import 'package:passport_stamp/core/constants/constant_strings.dart';
 import 'package:passport_stamp/core/constants/constant_svg.dart';
@@ -20,7 +21,7 @@ class StampController extends GetxController {
   var load = false.obs;
   var loading = false.obs;
   Function()? onDataUpdated;
-
+    var logger = Logger();
   late List<StampBackgroundModel> stampBackgrounds = [];
   late List<TravelMode> travelModes = [];
   String? imageData;
