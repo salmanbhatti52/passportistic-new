@@ -100,15 +100,16 @@ class StampScreen extends StatelessWidget {
     });
     print("body: ${response.body}");
     final responseString = response.body;
-    print("response_arrivalDetailsModels: $responseString");
-    print("status Code arrivalDetailsModels: ${response.statusCode}");
+    print("response_TravelDetailsModels: $responseString");
+    print("status Code response_TravelDetailsModels: ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      print("in 200 arrivalDetailsModels");
+      print("in 200 response_TravelDetailsModels");
       print("SuucessFull");
       departedDetailsModels = departedDetailsModelsFromJson(responseString);
 
-      print('arrivalDetailsModels status: ${departedDetailsModels.status}');
+      print(
+          'response_TravelDetailsModels status: ${departedDetailsModels.status}');
     }
   }
 
@@ -197,17 +198,17 @@ class StampScreen extends StatelessWidget {
             child: Column(
               children: [
                 addHeight(10),
-                        Padding(
-              padding: const EdgeInsets.only(left: 8, right: 1),
-              child: Text(
-                "Complete the following to get the Arrival Stamp of your own choosing.  If you are not happy with your choices, please make alternative selections",
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xFF141111).withOpacity(0.5)),
-              ),
-            ),
-              addHeight(10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2, right: 1),
+                  child: Text(
+                    "Complete the following to get the Arrival Stamp of your own choosing.  If you are not happy with your choices, please make alternative selections",
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF141111).withOpacity(0.5)),
+                  ),
+                ),
+                addHeight(10),
                 //Way selection radio buttons
                 GetBuilder<StampController>(
                   id: 'way_selection',

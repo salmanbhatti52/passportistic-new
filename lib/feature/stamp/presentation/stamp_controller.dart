@@ -138,34 +138,38 @@ class StampController extends GetxController {
   }
 
   validation() async {
-    prefs = await SharedPreferences.getInstance();
-    userID = prefs?.getString('userID');
-    var headersList = {
-      'Content-Type': 'application/json; charset=UTF-8',
-    };
-    var url =
-        Uri.parse('https://portal.passporttastic.com/api/getPackageDetails');
+    try {
+      prefs = await SharedPreferences.getInstance();
+      userID = prefs?.getString('userID');
+      var headersList = {
+        'Content-Type': 'application/json; charset=UTF-8',
+      };
+      var url =
+          Uri.parse('https://portal.passporttastic.com/api/getPackageDetails');
 
-    var body = {"passport_holder_id": "$userID"};
+      var body = {"passport_holder_id": "$userID"};
 
-    var req = http.Request('POST', url);
-    req.headers.addAll(headersList);
-    req.body = json.encode(body);
+      var req = http.Request('POST', url);
+      req.headers.addAll(headersList);
+      req.body = json.encode(body);
 
-    var res = await req.send();
-    final resBody = await res.stream.bytesToString();
+      var res = await req.send();
+      final resBody = await res.stream.bytesToString();
 
-    if (res.statusCode == 200) {
-      validationModelApi = validationModelApiFromJson(resBody);
-      print(
-          "Stamps in Validation API: ${validationModelApi.data!.totalStamps}");
-      print(resBody);
-      if (validationModelApi.data!.totalStamps == 0) {
-        // checkStamps();
+      if (res.statusCode == 200) {
+        validationModelApi = validationModelApiFromJson(resBody);
+        print(
+            "Stamps in Validation API: ${validationModelApi.data!.totalStamps}");
+        print(resBody);
+        if (validationModelApi.data!.totalStamps == 0) {
+          // checkStamps();
+        }
+      } else {
+        print(res.reasonPhrase);
+        validationModelApi = validationModelApiFromJson(resBody);
       }
-    } else {
-      print(res.reasonPhrase);
-      validationModelApi = validationModelApiFromJson(resBody);
+    } catch (e) {
+      print("An error occurred: $e");
     }
   }
 }
