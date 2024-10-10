@@ -536,6 +536,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "responsive_framework",
+      "rootUri": "file:///C:/Users/Droid/AppData/Local/Pub/Cache/hosted/pub.dev/responsive_framework-1.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "rive",
       "rootUri": "file:///C:/Users/Droid/AppData/Local/Pub/Cache/hosted/pub.dev/rive-0.13.9",
       "packageUri": "lib/",
@@ -794,7 +800,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-09-14T08:23:35.660711Z",
+  "generated": "2024-10-09T07:56:44.676781Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }
